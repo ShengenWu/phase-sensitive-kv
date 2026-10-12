@@ -4,7 +4,7 @@ All numbers below are produced by the exact pipeline in this repo (fixed seeds) 
 the reference (`learned`) and `uniform` kernels: Qwen3-0.6B backbone, W=S=8, 1 KV
 head, scalar gates, FineWeb-Edu, 2×H100 per run, ~2.2 h per 500M-token run.
 Raw artifacts: `results/` (per-checkpoint evaluations with bootstrap CIs + training
-logs). Trained checkpoints will be published on Hugging Face.
+logs). Trained checkpoint: [https://huggingface.co/wsedoc/phase-sensitive-kv-learned-500M](https://huggingface.co/wsedoc/phase-sensitive-kv-learned-500M).
 
 Accuracy is full-vocabulary top-1 on the frozen 8-residue phase-sweep eval sets
 (1,000 logical examples per protocol; uniform-guess chance = 1/64 ≈ 1.56%).

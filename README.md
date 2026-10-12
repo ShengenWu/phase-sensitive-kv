@@ -21,8 +21,8 @@ Chunked KV-cache compression gives every token a second positional coordinate �
 | Pretraining pipeline (torchrun DDP, FineWeb-Edu) | ✅ validated |
 | Reference model, 500M tokens | ✅ trained — **phase sensitivity reproduced** |
 
-See [RESULTS.md](RESULTS.md) for the numbers. The trained 500M-token reference
-checkpoint will be published on Hugging Face (link added once the upload completes).
+See [RESULTS.md](RESULTS.md) for the numbers. The trained 500M-token reference checkpoint is published at
+[https://huggingface.co/wsedoc/phase-sensitive-kv-learned-500M](https://huggingface.co/wsedoc/phase-sensitive-kv-learned-500M).
 
 ## Figures
 
