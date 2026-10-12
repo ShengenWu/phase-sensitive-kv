@@ -37,7 +37,7 @@ def load(run_dir):
     return out
 
 
-def phase_accuracy(ckpts):
+def phase_accuracy(ckpts, suffix=""):
     last = ckpts[-1]
     fig, axes = plt.subplots(1, 2, figsize=(11, 3.8), sharey=True)
     for ax, key, title in zip(axes, ["prefix", "inseq"],
@@ -62,11 +62,11 @@ def phase_accuracy(ckpts):
     fig.suptitle(f"Phase sensitivity — variant '{last['variant']}' (reference kernel)",
                  y=1.02, fontsize=12)
     fig.tight_layout()
-    fig.savefig(f"{OUT}/phase_accuracy.png", dpi=200, bbox_inches="tight")
-    print("wrote figures/phase_accuracy.png")
+    fig.savefig(f"{OUT}/phase_accuracy{suffix}.png", dpi=200, bbox_inches="tight")
+    print(f"wrote figures/phase_accuracy{suffix}.png")
 
 
-def budget_scaling(ckpts):
+def budget_scaling(ckpts, suffix=""):
     toks = [c["tokens_M"] for c in ckpts]
 
     def series(key, field):
@@ -103,15 +103,16 @@ def budget_scaling(ckpts):
     ax.legend(fontsize=8)
     ax.grid(alpha=0.3)
     fig.tight_layout()
-    fig.savefig(f"{OUT}/budget_scaling.png", dpi=200)
-    print("wrote figures/budget_scaling.png")
+    fig.savefig(f"{OUT}/budget_scaling{suffix}.png", dpi=200)
+    print(f"wrote figures/budget_scaling{suffix}.png")
 
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--run_dir", required=True, help="directory with ckpt_*M_eval.json")
+    ap.add_argument("--suffix", default="", help="output filename suffix (e.g. _uniform)")
     args = ap.parse_args()
     ckpts = load(args.run_dir)
     print(f"{len(ckpts)} checkpoints found")
-    phase_accuracy(ckpts)
-    budget_scaling(ckpts)
+    phase_accuracy(ckpts, args.suffix)
+    budget_scaling(ckpts, args.suffix)

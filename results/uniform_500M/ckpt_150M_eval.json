@@ -1,0 +1,107 @@
+{
+  "variant": "C1",
+  "rho": 0.1,
+  "ckpt": "/root/rescsa/runs/C1_500M/ckpt_150M.pt",
+  "protocols": {
+    "prefix": {
+      "full_vocab": {
+        "acc_by_phase": {
+          "0": 0.0,
+          "1": 0.001,
+          "2": 0.001,
+          "3": 0.001,
+          "4": 0.002,
+          "5": 0.0,
+          "6": 0.0,
+          "7": 0.002
+        },
+        "mean": 0.000875,
+        "mean_within": 0.0007142857142857143,
+        "worst_within": 0.0,
+        "best_within": 0.002,
+        "gap_within": 0.002,
+        "boundary_phase7": 0.002
+      },
+      "candidate_restricted": {
+        "acc_by_phase": {
+          "0": 0.022,
+          "1": 0.023,
+          "2": 0.022,
+          "3": 0.024,
+          "4": 0.024,
+          "5": 0.025,
+          "6": 0.024,
+          "7": 0.024
+        },
+        "mean": 0.0235,
+        "mean_within": 0.023428571428571427,
+        "worst_within": 0.022,
+        "best_within": 0.025,
+        "gap_within": 0.0030000000000000027,
+        "boundary_phase7": 0.024
+      },
+      "gold_prob_mean": 0.0012275014252557028,
+      "gold_nll_mean": 7.810328766914208,
+      "bootstrap": {
+        "worst_within_ci95": [
+          0.0,
+          0.0
+        ],
+        "gap_within_ci95": [
+          0.0,
+          0.003246753246753247
+        ]
+      }
+    },
+    "inseq": {
+      "full_vocab": {
+        "acc_by_phase": {
+          "0": 0.0,
+          "1": 0.0,
+          "2": 0.0,
+          "3": 0.0,
+          "4": 0.0,
+          "5": 0.0,
+          "6": 0.0,
+          "7": 0.0
+        },
+        "mean": 0.0,
+        "mean_within": 0.0,
+        "worst_within": 0.0,
+        "best_within": 0.0,
+        "gap_within": 0.0,
+        "boundary_phase7": 0.0
+      },
+      "candidate_restricted": {
+        "acc_by_phase": {
+          "0": 0.021,
+          "1": 0.022,
+          "2": 0.023,
+          "3": 0.023,
+          "4": 0.023,
+          "5": 0.02,
+          "6": 0.022,
+          "7": 0.024
+        },
+        "mean": 0.02225,
+        "mean_within": 0.021999999999999995,
+        "worst_within": 0.02,
+        "best_within": 0.023,
+        "gap_within": 0.002999999999999999,
+        "boundary_phase7": 0.024
+      },
+      "gold_prob_mean": 0.0010512711894491815,
+      "gold_nll_mean": 7.846855743164664,
+      "bootstrap": {
+        "worst_within_ci95": [
+          0.0,
+          0.0
+        ],
+        "gap_within_ci95": [
+          0.0,
+          0.0
+        ]
+      }
+    }
+  }
+}
