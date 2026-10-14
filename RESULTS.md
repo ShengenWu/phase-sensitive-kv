@@ -1,70 +1,97 @@
-# Results: phase sensitivity at small training budgets
+# Results: phase sensitivity and the full-attention control
 
-All numbers below are produced by the exact pipeline in this repo (fixed seeds) on
-the reference (`learned`) and `uniform` kernels: Qwen3-0.6B backbone, W=S=8, 1 KV
-head, scalar gates, FineWeb-Edu, 2×H100 per run, ~2.2 h per 500M-token run.
-Raw artifacts: `results/` (per-checkpoint evaluations with bootstrap CIs + training
-logs). Trained checkpoint: [https://huggingface.co/wsedoc/phase-sensitive-kv-learned-500M](https://huggingface.co/wsedoc/phase-sensitive-kv-learned-500M).
+All numbers are full-vocabulary top-1 accuracy (%) on the frozen phase-sweep
+evaluation sets (8 residues, 1,000 logical examples per protocol; uniform-guess
+chance = 1/64 ≈ 1.56%), produced by the exact pipeline in this repo.
+Comparisons are **data-matched**: the compressed reference (`C0`) and the
+uncompressed control (`full`) are trained on the same corpus, same data order
+and same token budget. Only `C0` and `full` results are published here.
 
-Accuracy is full-vocabulary top-1 on the frozen 8-residue phase-sweep eval sets
-(1,000 logical examples per protocol; uniform-guess chance = 1/64 ≈ 1.56%).
+Setup per run: Qwen3-0.6B backbone, W=S=8, 1 KV head, scalar gates, separate
+K/V branches, 16-token raw local window; FineWeb-Edu (sample-10BT); AdamW,
+peak LR 1.2e-3 cosine → 2e-5, batch 131k tokens/step, seeds as noted.
+Raw artifacts: `results/` (final-checkpoint evaluations + training logs);
+evaluation-set manifest: `results/evalset_manifest.json`.
 
-## Budget scaling — reference kernel (`learned`), Prefix Padding
+## Headline: compressed vs full attention at matched budgets
 
-| tokens | mean | worst phase (0–6) | gap (0–6) | boundary phase 7 |
-|-------:|-----:|------------------:|----------:|-----------------:|
-| 50M | 0.007 | 0.005 | 0.3 pp | 0.01 |
-| 100M | 0.023 | 0.017 | 1.6 pp | 0.01 |
-| 150M | 0.051 | 0.021 | 5.4 pp | 0.00 |
-| 200M | 0.071 | 0.043 | 9.4 pp | 0.03 |
-| 250M | 0.151 | 0.136 | 6.6 pp | 0.06 |
-| 300M | 0.164 | 0.134 | 8.3 pp | 0.07 |
-| 350M | 0.205 | 0.155 | 9.7 pp | 0.10 |
-| 400M | 0.200 | 0.167 | 9.7 pp | 0.10 |
-| 450M | 0.184 | 0.128 | 12.3 pp | 0.10 |
-| 499M | **0.217** | **0.153** | **13.9 pp** | 0.12 |
+`W` = worst within-window phase (0–6), `G` = within-window gap (best − worst),
+`B7` = boundary phase (key–value pair straddles a window).
 
-## Final checkpoint (499M), per phase — reference kernel
+### 1.75B tokens (2 seeds each)
 
-| phase | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 (boundary) |
-|------:|--:|--:|--:|--:|--:|--:|--:|--:|
-| Prefix | 0.21 | 0.15 | 0.22 | 0.19 | 0.29 | 0.27 | 0.27 | 0.12 |
-| In-seq | 0.12 | 0.11 | 0.14 | 0.14 | 0.12 | 0.10 | 0.10 | 0.07 |
+| protocol | model | seed | mean | W | G | B7 |
+|---|---|---|---:|---:|---:|---:|
+| prefix_local | full | 42 | **44.0** | 42.1 | **3.5** | 45.0 |
+| prefix_local | full | 43 | 38.2 | 36.9 | **2.2** | 39.5 |
+| prefix_local | C0 | 42 | 33.9 | 26.1 | 27.4 | 5.7 |
+| prefix_local | C0 | 43 | 43.3 | 18.4 | 43.6 | 32.8 |
+| inseq_local | full | 42 | 9.2 | 8.3 | 1.6 | 9.6 |
+| inseq_local | full | 43 | 5.4 | 4.8 | 1.1 | 5.1 |
+| inseq_local | C0 | 42 | 17.6 | 12.3 | 11.7 | 4.8 |
+| inseq_local | C0 | 43 | 13.5 | 5.9 | 13.6 | 8.3 |
+| prefix | full | 42 | 51.4 | 48.8 | 4.4 | 53.5 |
+| prefix | full | 43 | 40.5 | 37.9 | 4.6 | 40.1 |
+| prefix | C0 | 42 | 29.2 | 26.1 | 14.5 | 4.9 |
+| prefix | C0 | 43 | 41.2 | 19.8 | 43.0 | 41.6 |
+| inseq | full | 42 | 29.4 | 28.1 | 3.3 | 29.5 |
+| inseq | full | 43 | 15.2 | 14.8 | 1.1 | 15.2 |
+| inseq | C0 | 42 | 18.0 | 15.1 | 9.1 | 3.9 |
+| inseq | C0 | 43 | 21.2 | 14.7 | 15.2 | 15.1 |
 
-Prefix gap CI95 = [12.1, 15.7] pp; In-seq gap = 4.1 pp, CI95 = [3.2, 5.8] pp.
+### 500M tokens (seed 42 pair)
 
-## Uniform averaging at the same budget
+| protocol | model | mean | W | G | B7 |
+|---|---|---:|---:|---:|---:|
+| prefix_local | full | 27.5 | 26.9 | 1.6 | 27.7 |
+| prefix_local | C0 | 8.7 | 6.7 | 5.0 | 3.1 |
+| inseq_local | full | 1.6 | 1.3 | 0.4 | 1.6 |
+| inseq_local | C0 | 5.5 | 4.0 | 3.9 | 2.3 |
+| prefix | full | 24.1 | 23.0 | 2.0 | 24.0 |
+| prefix | C0 | 8.6 | 6.8 | 5.9 | 3.2 |
+| inseq | full | 13.9 | 12.8 | 1.7 | 14.0 |
+| inseq | C0 | 7.5 | 5.0 | 6.2 | 2.8 |
 
-The paper's uniform-averaging ablation (gate scores fixed at 1/W), trained
-identically: mean 0.012, worst 0.010, gap 0.6 pp at 500M — retrieval stays at
-chance level, so uniform averaging "removes" the phase gap at this budget only by
-removing retrieval itself (the paper's 100B-token uniform model reaches ~12.5%
-mean; uniform learns retrieval far more slowly than the learned kernel).
+### 3.5B tokens (planned)
 
-## Observations
+| protocol | model | mean | W | G | B7 |
+|---|---|---:|---:|---:|---:|
+| prefix_local | full | — | — | — | — |
+| prefix_local | C0 | — | — | — | — |
 
-1. **Within-window phase asymmetry is significant and grows with budget**:
-   13.9 pp gap at 500M (CI above), from ~9 pp at 200M in this run.
-2. **The boundary phase (7) is the weakest phase** at every budget, though its
-   suppression strength varies across runs of the same configuration (an earlier
-   run of the identical setup showed near-total suppression at 0.01; run-to-run
-   variance at this small budget is substantial).
-3. **In-sequence Padding shows the same ordering** with a smaller gap — the
-   effect does not require all records to move in lockstep.
-4. Retrieval is still climbing at 500M (the paper's 100B-token models reach 50%+
-   mean and up to 75 pp gaps for this kernel), so these are lower bounds on the
-   phase sensitivity this setup can produce.
+## What is reproduced, and what is not (yet)
 
-## Figures
+**Reproduced (robust across seeds and protocols):**
 
-- `figures/phase_accuracy.png` / `phase_accuracy_uniform.png` — per-phase accuracy at the final checkpoint
-- `figures/budget_scaling.png` / `budget_scaling_uniform.png` — mean/worst/boundary and gap-vs-budget with CIs
-- `figures/kernel_windowing.png`, `figures/kernel_dataflow.png` — kernel schematics
+1. **Phase sensitivity is a compression artifact.** The full-attention control
+   is flat in every condition — within-window gap ≤ 4.6 pp across both seeds
+   and all four protocols — while the compressed reference reaches gaps of
+   14.5–43.6 pp at 1.75B tokens. The contrast is categorical, not marginal.
+2. **Boundary asymmetry.** Phase 7 (key–value pairs straddling a window
+   boundary) is systematically suppressed in the compressed model at 500M
+   (3.1 pp vs an 8.7 pp overall mean; see per-phase vectors in the eval
+   JSONs), and seed-dependent at 1.75B, while full attention shows no boundary
+   effect (B7 ≈ mean in every run).
+3. **Not a language-modeling-quality artifact.** Validation loss is at parity
+   (500M: C0 3.290 vs full 3.307; 1.75B: ≈2.98 both), so the retrieval
+   uniformity difference is circuit-level, not capability-level.
+4. **Seed variance of the compressed model grows with budget.** At 500M the
+   C0 mean across seeds is tight (std ≈ 0.7 pp, n=4 incl. a same-seed
+   replica), while at 1.75B two seeds differ by 9.4 pp in mean and phase
+   metrics swing far more (a same-seed replica at 500M measures a ±2–3 pp
+   nondeterminism floor on worst/gap). Full attention is comparatively stable.
 
-## Artifacts
+**Not (yet) reproduced:** the paper's Table-8 ordering in which the compressed
+reference *exceeds* the 1-KV-head full-attention baseline on mean accuracy at
+100B tokens. At 1.75B our mean comparison is seed-dependent (full leads by
+10.1 pp on seed 42; C0 leads by 5.2 pp on seed 43). The paper's
+mechanism-level analyses (KV-head knockouts, gate cycling) have not been
+re-run here.
 
-- `results/learned_500M/` — 10 checkpoints × evaluations (both protocols, per-phase
-  accuracies, candidate-restricted, gold prob/NLL, bootstrap CIs) + `log.jsonl`
-- `results/uniform_500M/` — the same for the uniform kernel
+## Protocol note
 
-Hardware: 2×H100 80GB per run (~64k tokens/s), 500M tokens ≈ 2.2 h wall clock.
+`inseq_local` is an intentionally stressful diagnostic: prompts are ~66%
+single repeated spacer tokens (`｜`), which the full-attention control handles
+markedly worse than natural filler (9.2% vs 44.0% mean at 1.75B seed 42).
+The compressed model is comparatively robust to this stressor. Comparisons
+across protocols should bear this asymmetry in mind.

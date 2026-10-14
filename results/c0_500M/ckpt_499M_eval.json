@@ -1,0 +1,344 @@
+{
+  "variant": "C0",
+  "rho": 0.1,
+  "ckpt": "../runs/C0/ckpt_499M.pt",
+  "evaluation_schema_version": 3,
+  "training_schema_version": 2,
+  "tokens_seen": 499908608,
+  "training_args": {
+    "variant": "C0",
+    "rho": 0.1,
+    "c3_mode": "mix",
+    "residual_scale": 0.1,
+    "residual_init": "copy",
+    "residual_scope": "kv",
+    "run_name": "C0",
+    "total_tokens": 500000000,
+    "microbatch": 8,
+    "accum": 4,
+    "seq_len": 2048,
+    "lr": 0.0012,
+    "min_lr": 2e-05,
+    "warmup_frac": 0.02,
+    "ckpt_every_tokens": 50000000,
+    "val_every_steps": 250,
+    "resume": "",
+    "seed": 42,
+    "data_seed": 777,
+    "data_dir": "/root/rescsa/data",
+    "runs_dir": "/root/rescsa/experiments/science_v3_1_20261012_01/runs",
+    "schedule_tokens": 500000000,
+    "verify_sync_steps": 1
+  },
+  "data_identity": {
+    "train_tokens": 9890066261,
+    "val_tokens": 12000000,
+    "train_mtime_ns": 1791792401000000000,
+    "val_mtime_ns": 1791786517000000000,
+    "manifest_sha256": "a181557fca5f89b960965849c1cd5e9f781d1f13dac825e13b43e1baf51145bb"
+  },
+  "world_size": 2,
+  "legacy_training_budget_unverified": false,
+  "method": {
+    "variant": "C0",
+    "rho": 0.1,
+    "c3_mode": "mix",
+    "residual_scale": 0.1,
+    "residual_init": "copy",
+    "residual_scope": "kv"
+  },
+  "protocols": {
+    "prefix": {
+      "full_vocab": {
+        "acc_by_phase": {
+          "0": 0.091,
+          "1": 0.104,
+          "2": 0.102,
+          "3": 0.074,
+          "4": 0.127,
+          "5": 0.068,
+          "6": 0.094,
+          "7": 0.032
+        },
+        "mean": 0.0865,
+        "worst_all": 0.032,
+        "best_all": 0.127,
+        "gap_all": 0.095,
+        "mean_within": 0.09428571428571429,
+        "worst_within": 0.068,
+        "best_within": 0.127,
+        "gap_within": 0.059,
+        "boundary_phase7": 0.032
+      },
+      "candidate_restricted": {
+        "acc_by_phase": {
+          "0": 0.102,
+          "1": 0.126,
+          "2": 0.115,
+          "3": 0.087,
+          "4": 0.143,
+          "5": 0.08,
+          "6": 0.112,
+          "7": 0.04
+        },
+        "mean": 0.100625,
+        "worst_all": 0.04,
+        "best_all": 0.143,
+        "gap_all": 0.10299999999999998,
+        "mean_within": 0.10928571428571428,
+        "worst_within": 0.08,
+        "best_within": 0.143,
+        "gap_within": 0.06299999999999999,
+        "boundary_phase7": 0.04
+      },
+      "gold_prob_mean": 0.011530977842826133,
+      "gold_nll_mean": 5.267323049227092,
+      "bootstrap": {
+        "mean_ci95": [
+          0.072121875,
+          0.10075312499999999
+        ],
+        "worst_all_ci95": [
+          0.021,
+          0.043
+        ],
+        "gap_all_ci95": [
+          0.077,
+          0.11299999999999999
+        ],
+        "worst_within_ci95": [
+          0.053,
+          0.082
+        ],
+        "gap_within_ci95": [
+          0.046,
+          0.07500000000000001
+        ],
+        "boundary_phase7_ci95": [
+          0.021,
+          0.043
+        ]
+      },
+      "predictions_file": "ckpt_499M_eval_prefix_predictions.npz"
+    },
+    "inseq": {
+      "full_vocab": {
+        "acc_by_phase": {
+          "0": 0.085,
+          "1": 0.085,
+          "2": 0.093,
+          "3": 0.081,
+          "4": 0.112,
+          "5": 0.05,
+          "6": 0.064,
+          "7": 0.028
+        },
+        "mean": 0.07475,
+        "worst_all": 0.028,
+        "best_all": 0.112,
+        "gap_all": 0.084,
+        "mean_within": 0.08142857142857143,
+        "worst_within": 0.05,
+        "best_within": 0.112,
+        "gap_within": 0.062,
+        "boundary_phase7": 0.028
+      },
+      "candidate_restricted": {
+        "acc_by_phase": {
+          "0": 0.103,
+          "1": 0.103,
+          "2": 0.108,
+          "3": 0.093,
+          "4": 0.135,
+          "5": 0.059,
+          "6": 0.087,
+          "7": 0.031
+        },
+        "mean": 0.089875,
+        "worst_all": 0.031,
+        "best_all": 0.135,
+        "gap_all": 0.10400000000000001,
+        "mean_within": 0.09828571428571428,
+        "worst_within": 0.059,
+        "best_within": 0.135,
+        "gap_within": 0.07600000000000001,
+        "boundary_phase7": 0.031
+      },
+      "gold_prob_mean": 0.01018587006895359,
+      "gold_nll_mean": 5.439225754411027,
+      "bootstrap": {
+        "mean_ci95": [
+          0.061246875000000006,
+          0.08775624999999997
+        ],
+        "worst_all_ci95": [
+          0.018,
+          0.039
+        ],
+        "gap_all_ci95": [
+          0.067,
+          0.103
+        ],
+        "worst_within_ci95": [
+          0.037,
+          0.064
+        ],
+        "gap_within_ci95": [
+          0.046000000000000006,
+          0.08
+        ],
+        "boundary_phase7_ci95": [
+          0.018,
+          0.039
+        ]
+      },
+      "predictions_file": "ckpt_499M_eval_inseq_predictions.npz"
+    },
+    "prefix_local": {
+      "full_vocab": {
+        "acc_by_phase": {
+          "0": 0.109,
+          "1": 0.101,
+          "2": 0.117,
+          "3": 0.068,
+          "4": 0.114,
+          "5": 0.067,
+          "6": 0.092,
+          "7": 0.031
+        },
+        "mean": 0.087375,
+        "worst_all": 0.031,
+        "best_all": 0.117,
+        "gap_all": 0.08600000000000001,
+        "mean_within": 0.09542857142857143,
+        "worst_within": 0.067,
+        "best_within": 0.117,
+        "gap_within": 0.05,
+        "boundary_phase7": 0.031
+      },
+      "candidate_restricted": {
+        "acc_by_phase": {
+          "0": 0.131,
+          "1": 0.113,
+          "2": 0.135,
+          "3": 0.087,
+          "4": 0.13,
+          "5": 0.077,
+          "6": 0.117,
+          "7": 0.043
+        },
+        "mean": 0.104125,
+        "worst_all": 0.043,
+        "best_all": 0.135,
+        "gap_all": 0.09200000000000001,
+        "mean_within": 0.11285714285714285,
+        "worst_within": 0.077,
+        "best_within": 0.135,
+        "gap_within": 0.05800000000000001,
+        "boundary_phase7": 0.043
+      },
+      "gold_prob_mean": 0.011637549543472687,
+      "gold_nll_mean": 5.267589324853358,
+      "bootstrap": {
+        "mean_ci95": [
+          0.073125,
+          0.101875
+        ],
+        "worst_all_ci95": [
+          0.020975000000000004,
+          0.042
+        ],
+        "gap_all_ci95": [
+          0.07100000000000001,
+          0.10500000000000001
+        ],
+        "worst_within_ci95": [
+          0.05,
+          0.08
+        ],
+        "gap_within_ci95": [
+          0.04000000000000001,
+          0.069
+        ],
+        "boundary_phase7_ci95": [
+          0.020975000000000004,
+          0.042
+        ]
+      },
+      "predictions_file": "ckpt_499M_eval_prefix_local_predictions.npz"
+    },
+    "inseq_local": {
+      "full_vocab": {
+        "acc_by_phase": {
+          "0": 0.065,
+          "1": 0.04,
+          "2": 0.072,
+          "3": 0.052,
+          "4": 0.069,
+          "5": 0.043,
+          "6": 0.079,
+          "7": 0.023
+        },
+        "mean": 0.055375,
+        "worst_all": 0.023,
+        "best_all": 0.079,
+        "gap_all": 0.056,
+        "mean_within": 0.06,
+        "worst_within": 0.04,
+        "best_within": 0.079,
+        "gap_within": 0.039,
+        "boundary_phase7": 0.023
+      },
+      "candidate_restricted": {
+        "acc_by_phase": {
+          "0": 0.073,
+          "1": 0.047,
+          "2": 0.094,
+          "3": 0.056,
+          "4": 0.081,
+          "5": 0.05,
+          "6": 0.097,
+          "7": 0.027
+        },
+        "mean": 0.065625,
+        "worst_all": 0.027,
+        "best_all": 0.097,
+        "gap_all": 0.07,
+        "mean_within": 0.07114285714285715,
+        "worst_within": 0.047,
+        "best_within": 0.097,
+        "gap_within": 0.05,
+        "boundary_phase7": 0.027
+      },
+      "gold_prob_mean": 0.009261827972023184,
+      "gold_nll_mean": 5.642490374208073,
+      "bootstrap": {
+        "mean_ci95": [
+          0.044,
+          0.066625
+        ],
+        "worst_all_ci95": [
+          0.014,
+          0.033
+        ],
+        "gap_all_ci95": [
+          0.044,
+          0.07100000000000001
+        ],
+        "worst_within_ci95": [
+          0.028,
+          0.05
+        ],
+        "gap_within_ci95": [
+          0.029999999999999992,
+          0.05399999999999999
+        ],
+        "boundary_phase7_ci95": [
+          0.014,
+          0.033
+        ]
+      },
+      "predictions_file": "ckpt_499M_eval_inseq_local_predictions.npz"
+    }
+  }
+}

@@ -1,0 +1,345 @@
+{
+  "variant": "C0",
+  "rho": 0.1,
+  "ckpt": "/root/rescsa/experiments/science_v3_1_20261012_01/runs/fullattn_s42/ckpt_499M.pt",
+  "evaluation_schema_version": 3,
+  "training_schema_version": 2,
+  "tokens_seen": 499908608,
+  "training_args": {
+    "variant": "C0",
+    "rho": 0.1,
+    "layout_kind": "full",
+    "c3_mode": "mix",
+    "residual_scale": 0.1,
+    "residual_init": "copy",
+    "residual_scope": "kv",
+    "run_name": "fullattn_s42",
+    "total_tokens": 500000000,
+    "microbatch": 8,
+    "accum": 4,
+    "seq_len": 2048,
+    "lr": 0.0012,
+    "min_lr": 2e-05,
+    "warmup_frac": 0.02,
+    "ckpt_every_tokens": 500000000,
+    "val_every_steps": 250,
+    "resume": "",
+    "seed": 42,
+    "data_seed": 777,
+    "data_dir": "/root/rescsa/data",
+    "runs_dir": "/root/rescsa/experiments/science_v3_1_20261012_01/runs",
+    "schedule_tokens": 500000000,
+    "verify_sync_steps": 1
+  },
+  "data_identity": {
+    "train_tokens": 9890066261,
+    "val_tokens": 12000000,
+    "train_mtime_ns": 1791792401000000000,
+    "val_mtime_ns": 1791786517000000000,
+    "manifest_sha256": "a181557fca5f89b960965849c1cd5e9f781d1f13dac825e13b43e1baf51145bb"
+  },
+  "world_size": 2,
+  "legacy_training_budget_unverified": false,
+  "method": {
+    "variant": "C0",
+    "rho": 0.1,
+    "c3_mode": "mix",
+    "residual_scale": 0.1,
+    "residual_init": "copy",
+    "residual_scope": "kv"
+  },
+  "protocols": {
+    "prefix": {
+      "full_vocab": {
+        "acc_by_phase": {
+          "0": 0.25,
+          "1": 0.23,
+          "2": 0.237,
+          "3": 0.243,
+          "4": 0.24,
+          "5": 0.249,
+          "6": 0.24,
+          "7": 0.24
+        },
+        "mean": 0.241125,
+        "worst_all": 0.23,
+        "best_all": 0.25,
+        "gap_all": 0.01999999999999999,
+        "mean_within": 0.24128571428571427,
+        "worst_within": 0.23,
+        "best_within": 0.25,
+        "gap_within": 0.01999999999999999,
+        "boundary_phase7": 0.24
+      },
+      "candidate_restricted": {
+        "acc_by_phase": {
+          "0": 0.279,
+          "1": 0.265,
+          "2": 0.28,
+          "3": 0.277,
+          "4": 0.276,
+          "5": 0.277,
+          "6": 0.286,
+          "7": 0.276
+        },
+        "mean": 0.277,
+        "worst_all": 0.265,
+        "best_all": 0.286,
+        "gap_all": 0.020999999999999963,
+        "mean_within": 0.27714285714285714,
+        "worst_within": 0.265,
+        "best_within": 0.286,
+        "gap_within": 0.020999999999999963,
+        "boundary_phase7": 0.276
+      },
+      "gold_prob_mean": 0.038979401968399545,
+      "gold_nll_mean": 4.396155610213469,
+      "bootstrap": {
+        "mean_ci95": [
+          0.21699687499999998,
+          0.265628125
+        ],
+        "worst_all_ci95": [
+          0.204,
+          0.254
+        ],
+        "gap_all_ci95": [
+          0.013999999999999985,
+          0.038000000000000006
+        ],
+        "worst_within_ci95": [
+          0.204,
+          0.2540249999999999
+        ],
+        "gap_within_ci95": [
+          0.013000000000000012,
+          0.038000000000000006
+        ],
+        "boundary_phase7_ci95": [
+          0.214,
+          0.266
+        ]
+      },
+      "predictions_file": "ckpt_499M_eval_prefix_predictions.npz"
+    },
+    "inseq": {
+      "full_vocab": {
+        "acc_by_phase": {
+          "0": 0.145,
+          "1": 0.145,
+          "2": 0.134,
+          "3": 0.145,
+          "4": 0.139,
+          "5": 0.137,
+          "6": 0.128,
+          "7": 0.14
+        },
+        "mean": 0.139125,
+        "worst_all": 0.128,
+        "best_all": 0.145,
+        "gap_all": 0.016999999999999987,
+        "mean_within": 0.13899999999999998,
+        "worst_within": 0.128,
+        "best_within": 0.145,
+        "gap_within": 0.016999999999999987,
+        "boundary_phase7": 0.14
+      },
+      "candidate_restricted": {
+        "acc_by_phase": {
+          "0": 0.159,
+          "1": 0.155,
+          "2": 0.145,
+          "3": 0.154,
+          "4": 0.145,
+          "5": 0.151,
+          "6": 0.144,
+          "7": 0.148
+        },
+        "mean": 0.150125,
+        "worst_all": 0.144,
+        "best_all": 0.159,
+        "gap_all": 0.015000000000000013,
+        "mean_within": 0.1504285714285714,
+        "worst_within": 0.144,
+        "best_within": 0.159,
+        "gap_within": 0.015000000000000013,
+        "boundary_phase7": 0.148
+      },
+      "gold_prob_mean": 0.02209376548007276,
+      "gold_nll_mean": 4.991808185174331,
+      "bootstrap": {
+        "mean_ci95": [
+          0.12112187499999999,
+          0.15837812499999998
+        ],
+        "worst_all_ci95": [
+          0.107,
+          0.146
+        ],
+        "gap_all_ci95": [
+          0.012999999999999984,
+          0.037000000000000005
+        ],
+        "worst_within_ci95": [
+          0.107,
+          0.146
+        ],
+        "gap_within_ci95": [
+          0.012999999999999984,
+          0.037000000000000005
+        ],
+        "boundary_phase7_ci95": [
+          0.118,
+          0.163
+        ]
+      },
+      "predictions_file": "ckpt_499M_eval_inseq_predictions.npz"
+    },
+    "prefix_local": {
+      "full_vocab": {
+        "acc_by_phase": {
+          "0": 0.274,
+          "1": 0.285,
+          "2": 0.272,
+          "3": 0.269,
+          "4": 0.271,
+          "5": 0.272,
+          "6": 0.277,
+          "7": 0.277
+        },
+        "mean": 0.274625,
+        "worst_all": 0.269,
+        "best_all": 0.285,
+        "gap_all": 0.01599999999999996,
+        "mean_within": 0.2742857142857143,
+        "worst_within": 0.269,
+        "best_within": 0.285,
+        "gap_within": 0.01599999999999996,
+        "boundary_phase7": 0.277
+      },
+      "candidate_restricted": {
+        "acc_by_phase": {
+          "0": 0.335,
+          "1": 0.349,
+          "2": 0.331,
+          "3": 0.325,
+          "4": 0.325,
+          "5": 0.335,
+          "6": 0.338,
+          "7": 0.334
+        },
+        "mean": 0.334,
+        "worst_all": 0.325,
+        "best_all": 0.349,
+        "gap_all": 0.023999999999999966,
+        "mean_within": 0.33399999999999996,
+        "worst_within": 0.325,
+        "best_within": 0.349,
+        "gap_within": 0.023999999999999966,
+        "boundary_phase7": 0.334
+      },
+      "gold_prob_mean": 0.05413351892803439,
+      "gold_nll_mean": 4.143595978408377,
+      "bootstrap": {
+        "mean_ci95": [
+          0.25074687500000004,
+          0.30074999999999996
+        ],
+        "worst_all_ci95": [
+          0.239,
+          0.291
+        ],
+        "gap_all_ci95": [
+          0.011999999999999955,
+          0.03699999999999998
+        ],
+        "worst_within_ci95": [
+          0.239,
+          0.292
+        ],
+        "gap_within_ci95": [
+          0.010999999999999954,
+          0.03699999999999998
+        ],
+        "boundary_phase7_ci95": [
+          0.249,
+          0.304
+        ]
+      },
+      "predictions_file": "ckpt_499M_eval_prefix_local_predictions.npz"
+    },
+    "inseq_local": {
+      "full_vocab": {
+        "acc_by_phase": {
+          "0": 0.016,
+          "1": 0.016,
+          "2": 0.016,
+          "3": 0.016,
+          "4": 0.013,
+          "5": 0.017,
+          "6": 0.017,
+          "7": 0.016
+        },
+        "mean": 0.015875,
+        "worst_all": 0.013,
+        "best_all": 0.017,
+        "gap_all": 0.004000000000000002,
+        "mean_within": 0.015857142857142858,
+        "worst_within": 0.013,
+        "best_within": 0.017,
+        "gap_within": 0.004000000000000002,
+        "boundary_phase7": 0.016
+      },
+      "candidate_restricted": {
+        "acc_by_phase": {
+          "0": 0.019,
+          "1": 0.019,
+          "2": 0.019,
+          "3": 0.02,
+          "4": 0.018,
+          "5": 0.02,
+          "6": 0.019,
+          "7": 0.018
+        },
+        "mean": 0.019,
+        "worst_all": 0.018,
+        "best_all": 0.02,
+        "gap_all": 0.0020000000000000018,
+        "mean_within": 0.019142857142857145,
+        "worst_within": 0.018,
+        "best_within": 0.02,
+        "gap_within": 0.0020000000000000018,
+        "boundary_phase7": 0.018
+      },
+      "gold_prob_mean": 0.0033862437588833387,
+      "gold_nll_mean": 6.931767864850337,
+      "bootstrap": {
+        "mean_ci95": [
+          0.009000000000000001,
+          0.023875
+        ],
+        "worst_all_ci95": [
+          0.007,
+          0.021
+        ],
+        "gap_all_ci95": [
+          0.0010000000000000009,
+          0.009000000000000001
+        ],
+        "worst_within_ci95": [
+          0.007,
+          0.021
+        ],
+        "gap_within_ci95": [
+          0.0010000000000000009,
+          0.009000000000000001
+        ],
+        "boundary_phase7_ci95": [
+          0.009,
+          0.024
+        ]
+      },
+      "predictions_file": "ckpt_499M_eval_inseq_local_predictions.npz"
+    }
+  }
+}
