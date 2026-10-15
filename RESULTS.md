@@ -52,21 +52,26 @@ evaluation-set manifest: `results/evalset_manifest.json`.
 | inseq | full | 13.9 | 12.8 | 1.7 | 14.0 |
 | inseq | C0 | 7.5 | 5.0 | 6.2 | 2.8 |
 
-### 3.5B tokens (planned)
+### 3.5B tokens (seed 42; full-attention control training in progress)
 
 | protocol | model | mean | W | G | B7 |
 |---|---|---:|---:|---:|---:|
+| prefix_local | C0 | 57.2 | 34.0 | **46.6** | 9.9 |
+| inseq_local | C0 | 20.1 | 12.1 | 18.2 | 5.2 |
+| prefix | C0 | 47.3 | 35.4 | 31.8 | 6.2 |
+| inseq | C0 | 24.2 | 14.4 | 24.7 | 6.6 |
 | prefix_local | full | — | — | — | — |
-| prefix_local | C0 | — | — | — | — |
 
 ## What is reproduced, and what is not (yet)
 
 **Reproduced (robust across seeds and protocols):**
 
-1. **Phase sensitivity is a compression artifact.** The full-attention control
-   is flat in every condition — within-window gap ≤ 4.6 pp across both seeds
-   and all four protocols — while the compressed reference reaches gaps of
-   14.5–43.6 pp at 1.75B tokens. The contrast is categorical, not marginal.
+1. **Phase sensitivity is a compression artifact, and it grows with budget.**
+   The full-attention control is flat in every condition — within-window gap
+   ≤ 4.6 pp across both seeds and all four protocols — while the compressed
+   reference's gap grows 5.0 → 27.4 → **46.6 pp** (500M → 1.75B → 3.5B,
+   seed 42, prefix_local), approaching the paper's 75.3 pp at 100B tokens
+   with 1/30th of the compute. The contrast is categorical, not marginal.
 2. **Boundary asymmetry.** Phase 7 (key–value pairs straddling a window
    boundary) is systematically suppressed in the compressed model at 500M
    (3.1 pp vs an 8.7 pp overall mean; see per-phase vectors in the eval

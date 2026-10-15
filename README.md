@@ -8,7 +8,7 @@ An independent, from-scratch reproduction of **"Periodic Weak Spots: Phase Sensi
 > unstated details. Please cite the original paper for the discovery of phase
 > sensitivity (BibTeX at the bottom of this page).
 
-Chunked KV-cache compression gives every token a second positional coordinate — its **phase** (position modulo the compression stride). The paper shows that retrieval accuracy in models trained with such compression varies sharply and periodically with the source phase, and that average benchmarks conceal these periodic weak spots. This repo rebuilds the paper's controlled experimental setup on a Qwen3-0.6B backbone with a **data-matched uncompressed (full-attention) control**, and publishes the compressed-reference (`C0`) vs full-attention comparison at 500M and 1.75B training tokens.
+Chunked KV-cache compression gives every token a second positional coordinate — its **phase** (position modulo the compression stride). The paper shows that retrieval accuracy in models trained with such compression varies sharply and periodically with the source phase, and that average benchmarks conceal these periodic weak spots. This repo rebuilds the paper's controlled experimental setup on a Qwen3-0.6B backbone with a **data-matched uncompressed (full-attention) control**, and publishes the compressed-reference (`C0`) vs full-attention comparison at 500M, 1.75B and 3.5B training tokens.
 
 ## Status
 
@@ -21,7 +21,8 @@ Chunked KV-cache compression gives every token a second positional coordinate �
 | Pretraining pipeline (torchrun DDP, FineWeb-Edu) | ✅ validated |
 | C0 + full attention, 500M tokens (seed 42 pair) | ✅ trained — phase sensitivity vs flat control reproduced |
 | C0 + full attention, 1.75B tokens (seeds 42, 43) | ✅ trained — gap contrast categorical across seeds |
-| 3.5B tokens | ⏳ planned (table left blank in [RESULTS.md](RESULTS.md)) |
+| C0, 3.5B tokens (seed 42) | ✅ trained — **gap 46.6 pp** (from 5.0 pp @500M, 27.4 pp @1.75B) |
+| Full attention, 3.5B tokens | ⏳ training (~13 h) |
 
 See [RESULTS.md](RESULTS.md) for the numbers. Trained 1.75B checkpoints are published at
 [wsedoc/phase-sensitive-kv-c0-1p75B](https://huggingface.co/wsedoc/phase-sensitive-kv-c0-1p75B) and
@@ -31,9 +32,23 @@ See [RESULTS.md](RESULTS.md) for the numbers. Trained 1.75B checkpoints are publ
 
 At matched training budgets, **the uncompressed control is flat and the compressed model is not**:
 
-- Full attention: within-window phase gap ≤ **4.6 pp** in every seed/protocol at 1.75B (mostly ≤ 3.5), no boundary effect;
-- Compressed reference (C0): within-window gap **14.5–43.6 pp** at 1.75B, boundary phase (7) suppressed at 500M, validation loss at parity with the control — the phase-sensitivity phenomenon is a compression artifact, not a capability artifact;
-- The compressed model's seed variance grows with budget (mean seed-std ≈ 0.7 pp at 500M, n=4; 9.4 pp spread across two seeds at 1.75B), while the control stays comparatively stable.
+### Core result: phase gap vs budget (C0, prefix_local protocol, seed 42)
+
+| Training tokens | mean acc | worst phase | **phase gap** | boundary (phase 7) |
+|---:|---:|---:|---:|---:|
+| 500M | 8.7 % | 6.7 % | **5.0 pp** | 3.1 % |
+| 1.75B | 33.9 % | 26.1 % | **27.4 pp** | 5.7 % |
+| **3.5B** | **57.2 %** | 34.0 % | **46.6 pp** | 9.9 % |
+| *Full attention (1.75B)* | *44.0 %* | *42.1 %* | *3.5 pp* | *45.0 %* |
+
+The phase gap grows nearly linearly with budget (5.0 → 27.4 → 46.6 pp) while the uncompressed control stays flat (≤ 4.6 pp across every seed/protocol at 1.75B, no boundary effect) — **phase sensitivity is a compression artifact that intensifies as retrieval capability matures**, approaching the paper's 100B-token magnitude (75.3 pp) at 1/30th of their compute. The boundary phase (7) remains the weakest phase at every budget.
+
+Additional findings:
+
+- Validation loss at parity between C0 and the control — the phenomenon is not a capability artifact;
+- The compressed model's seed variance grows with budget (mean seed-std ≈ 0.7 pp at 500M, n=4; 9.4 pp spread across two seeds at 1.75B), while the control stays comparatively stable;
+- Uniform-averaging gates (the paper's ablation) remain at chance level at 500M — learned gates are necessary for retrieval to form at this budget;
+- Same-seed replica noise (cuDNN nondeterminism) alone produces ±2–3 pp worst/gap swings at 500M: single-seed gap claims carry this measurement floor.
 
 | Per-phase accuracy at 1.75B (both seeds, C0 vs full) |
 |---|
