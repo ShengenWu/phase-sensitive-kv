@@ -52,7 +52,7 @@ evaluation-set manifest: `results/evalset_manifest.json`.
 | inseq | full | 13.9 | 12.8 | 1.7 | 14.0 |
 | inseq | C0 | 7.5 | 5.0 | 6.2 | 2.8 |
 
-### 3.5B tokens (seed 42; full-attention control training in progress)
+### 3.5B tokens (seed 42)
 
 | protocol | model | mean | W | G | B7 |
 |---|---|---:|---:|---:|---:|
@@ -60,7 +60,10 @@ evaluation-set manifest: `results/evalset_manifest.json`.
 | inseq_local | C0 | 20.1 | 12.1 | 18.2 | 5.2 |
 | prefix | C0 | 47.3 | 35.4 | 31.8 | 6.2 |
 | inseq | C0 | 24.2 | 14.4 | 24.7 | 6.6 |
-| prefix_local | full | — | — | — | — |
+| prefix_local | full | 48.8 | 47.6 | **2.5** | 47.6 |
+| inseq_local | full | 37.7 | 36.5 | 2.7 | 36.9 |
+| prefix | full | 48.8 | 47.3 | 2.7 | 47.3 |
+| inseq | full | 60.6 | 59.4 | 2.2 | 61.0 |
 
 ## What is reproduced, and what is not (yet)
 
@@ -68,7 +71,8 @@ evaluation-set manifest: `results/evalset_manifest.json`.
 
 1. **Phase sensitivity is a compression artifact, and it grows with budget.**
    The full-attention control is flat in every condition — within-window gap
-   ≤ 4.6 pp across both seeds and all four protocols — while the compressed
+   ≤ 4.6 pp across both seeds and all four protocols at 1.75B, and 2.2–2.7 pp
+   across all four protocols at 3.5B — while the compressed
    reference's gap grows 5.0 → 27.4 → **46.6 pp** (500M → 1.75B → 3.5B,
    seed 42, prefix_local), approaching the paper's 75.3 pp at 100B tokens
    with 1/30th of the compute. The contrast is categorical, not marginal.
@@ -89,7 +93,11 @@ evaluation-set manifest: `results/evalset_manifest.json`.
 **Not (yet) reproduced:** the paper's Table-8 ordering in which the compressed
 reference *exceeds* the 1-KV-head full-attention baseline on mean accuracy at
 100B tokens. At 1.75B our mean comparison is seed-dependent (full leads by
-10.1 pp on seed 42; C0 leads by 5.2 pp on seed 43). The paper's
+10.1 pp on seed 42; C0 leads by 5.2 pp on seed 43). At 3.5B (seed 42) the
+ordering is protocol-dependent: C0 exceeds the full control on prefix_local
+(57.2 vs 48.8) — the Table-8 direction, notable given C0 writes 1 compressed
+KV entry per 8 tokens — is at parity on prefix (47.3 vs 48.8), and reverses
+on the inseq family (24.2 vs 60.6). The paper's
 mechanism-level analyses (KV-head knockouts, gate cycling) have not been
 re-run here.
 
@@ -98,5 +106,7 @@ re-run here.
 `inseq_local` is an intentionally stressful diagnostic: prompts are ~66%
 single repeated spacer tokens (`｜`), which the full-attention control handles
 markedly worse than natural filler (9.2% vs 44.0% mean at 1.75B seed 42).
-The compressed model is comparatively robust to this stressor. Comparisons
+The compressed model is comparatively robust to this stressor. At 3.5B the
+full control's inseq_local recovers to 37.7% (from 9.2% at 1.75B), so the
+1.75B collapse did not reproduce at the larger budget. Comparisons
 across protocols should bear this asymmetry in mind.

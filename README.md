@@ -22,11 +22,11 @@ Chunked KV-cache compression gives every token a second positional coordinate �
 | C0 + full attention, 500M tokens (seed 42 pair) | ✅ trained — phase sensitivity vs flat control reproduced |
 | C0 + full attention, 1.75B tokens (seeds 42, 43) | ✅ trained — gap contrast categorical across seeds |
 | C0, 3.5B tokens (seed 42) | ✅ trained — **gap 46.6 pp** (from 5.0 pp @500M, 27.4 pp @1.75B) |
-| Full attention, 3.5B tokens | ⏳ training (~13 h) |
+| Full attention, 3.5B tokens (seed 42) | ✅ trained — **gap 2.5 pp** (flat; three-point control curve closed) |
 
-See [RESULTS.md](RESULTS.md) for the numbers. Trained 1.75B checkpoints are published at
-[wsedoc/phase-sensitive-kv-c0-1p75B](https://huggingface.co/wsedoc/phase-sensitive-kv-c0-1p75B) and
-[wsedoc/phase-sensitive-kv-fullattn-1p75B](https://huggingface.co/wsedoc/phase-sensitive-kv-fullattn-1p75B).
+See [RESULTS.md](RESULTS.md) for the numbers. Trained checkpoints are published on Hugging Face:
+[1.75B pair](https://huggingface.co/wsedoc/phase-sensitive-kv-c0-1p75B) ([c0](https://huggingface.co/wsedoc/phase-sensitive-kv-c0-1p75B), [fullattn](https://huggingface.co/wsedoc/phase-sensitive-kv-fullattn-1p75B), seeds 42/43)
+and the [3.5B pair](https://huggingface.co/wsedoc/phase-sensitive-kv-c0-3p5B) ([c0](https://huggingface.co/wsedoc/phase-sensitive-kv-c0-3p5B), [fullattn](https://huggingface.co/wsedoc/phase-sensitive-kv-fullattn-3p5B), seed 42).
 
 ## Key finding
 
@@ -40,8 +40,9 @@ At matched training budgets, **the uncompressed control is flat and the compress
 | 1.75B | 33.9 % | 26.1 % | **27.4 pp** | 5.7 % |
 | **3.5B** | **57.2 %** | 34.0 % | **46.6 pp** | 9.9 % |
 | *Full attention (1.75B)* | *44.0 %* | *42.1 %* | *3.5 pp* | *45.0 %* |
+| *Full attention (3.5B)* | *48.8 %* | *47.6 %* | *2.5 pp* | *47.6 %* |
 
-The phase gap grows nearly linearly with budget (5.0 → 27.4 → 46.6 pp) while the uncompressed control stays flat (≤ 4.6 pp across every seed/protocol at 1.75B, no boundary effect) — **phase sensitivity is a compression artifact that intensifies as retrieval capability matures**, approaching the paper's 100B-token magnitude (75.3 pp) at 1/30th of their compute. The boundary phase (7) remains the weakest phase at every budget.
+The phase gap grows nearly linearly with budget (5.0 → 27.4 → 46.6 pp) while the uncompressed control stays flat at every matched budget (≤ 4.6 pp across every seed/protocol at 1.75B; 2.2–2.7 pp across all four protocols at 3.5B, no boundary effect) — **phase sensitivity is a compression artifact that intensifies as retrieval capability matures**, approaching the paper's 100B-token magnitude (75.3 pp) at 1/30th of their compute. The boundary phase (7) remains the weakest phase at every budget.
 
 Additional findings:
 
