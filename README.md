@@ -24,9 +24,9 @@ Chunked KV-cache compression gives every token a second positional coordinate �
 | C0, 3.5B tokens (seed 42) | ✅ trained — **gap 46.6 pp** (from 5.0 pp @500M, 27.4 pp @1.75B) |
 | Full attention, 3.5B tokens (seed 42) | ✅ trained — **gap 2.5 pp** (flat; three-point control curve closed) |
 
-See [RESULTS.md](RESULTS.md) for the numbers. Trained checkpoints are published on Hugging Face:
-[1.75B pair](https://huggingface.co/wsedoc/phase-sensitive-kv-c0-1p75B) ([c0](https://huggingface.co/wsedoc/phase-sensitive-kv-c0-1p75B), [fullattn](https://huggingface.co/wsedoc/phase-sensitive-kv-fullattn-1p75B), seeds 42/43)
-and the [3.5B pair](https://huggingface.co/wsedoc/phase-sensitive-kv-c0-3p5B) ([c0](https://huggingface.co/wsedoc/phase-sensitive-kv-c0-3p5B), [fullattn](https://huggingface.co/wsedoc/phase-sensitive-kv-fullattn-3p5B), seed 42).
+See [RESULTS.md](RESULTS.md) for the numbers. All trained checkpoints are published in a single
+Hugging Face project repo, [wsedoc/phase-sensitive-kv](https://huggingface.co/wsedoc/phase-sensitive-kv):
+`c0-1p75b/` and `fullattn-1p75b/` (seeds 42/43), `c0-3p5b/` and `fullattn-3p5b/` (seed 42).
 
 ## Key finding
 
